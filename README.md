@@ -1,12 +1,16 @@
-<h1>Grey Script Compiler</h1>
-<h3>Small file includer for Grey Script written in Rust 🦀</h3>
-<h2>What is Grey Script?</h2>
-Grey script is a fork of <a href="https://github.com/JoeStrout/miniscript"><b>Miniscript</b></a>. It is used in game named <a href="https://store.steampowered.com/app/605230"><b>Grey Hack</b></a>.
-<h2> Features </h2>
-<ul>
-  <li><h3>Blazingly fast</li></h3>
-  <li><h3>Pattern matching with <a href="https://en.wikipedia.org/wiki/Glob_(programming)">glob</a> </li></h3>
-  <li><h3>Paste compiled version right in clipboard</li></h3>
+# Grey Script Compiler
+### Small file includer for Grey Script written in Rust 🦀
+## What is Grey Script?
+Grey script is a fork of [**Miniscript**](https://github.com/JoeStrout/miniscript). It is used in game named [**Grey Hack**](https://store.steampowered.com/app/605230").
+
+## Why do I even need this?
+The game is very inconvenient to use the in-game code editor, but you can use external editors like [vs code](https://code.visualstudio.com/). They offer syntax checking and many other features. But when the complexity of the project grows, you need to split it into files. The game already has an **import_code** function that imports the contents of a file, but when using external editors, you have to copy and paste dozens of files inside the game. This program tries to solve this problem. With it you can compile all your code in a second and immediately insert it into the game.
+
+## Features
+- ### Blazingly fast
+- ### Pattern matching with [glob](https://en.wikipedia.org/wiki/Glob_(programming))
+- ### Paste compiled version right in clipboard
+- ### No need to split files
 </ul>
 
 ## Usage
@@ -22,52 +26,116 @@ greyscript_compiler --file <FILE_PATH> --output <OUTPUT_PATH>
 greyscript_compiler --file <FILE_PATH> --clip
 ```
 
-On <b>Linux</b> use xclip instead
+On **Linux** use xclip instead
 
 ```bash
 
 greyscript_compiler --file <FILE_PATH> --output /dev/stdout | xclip -selection clipboard
 ```
 
-## File example
-Place glob pattern between //include< and > like shown below:
+## File examples
+Place glob pattern between *//include<* and *>* like shown below:
 
-<b>a.gs</b>
+**a.gs**
 ```miniscript
 a = function()
   print("Hello from a.gs!")
 end function
 ```
 
-<b>b.gs</b>
+**b.gs**
 ```miniscript
 //include<a.gs>
+// Will include 'a.gs' file in directory where input file located
+
+print("Hello from b.gs!")
+a
+```
+
+Then, compile b.gs as shown below:
+```bash
+greyscript_compiler -f b.gs -o output.gs
+```
+
+**output.gs**
+```miniscript
+a = function()
+  print("Hello from a.gs!")
+end function
+
+
+// Will include 'a.gs' file in directory where input file located
+
 print("Hello from b.gs!")
 a // Hello from a.gs!
+
 ```
 
 Another example:
 
-<b>somefolder/a.gs</b>
+**somefolder/a.gs**
 ```miniscript
 a = function()
   print("Hello from a.gs!")
 end function
 ```
 
-<b>somefolder/another_folder/b.gs</b>
+**somefolder/another_folder/b.gs**
 ```miniscript
 b = function()
   print("Hello from b.gs!")
 end function
 ```
 
-<b>c.gs</b>
+**c.gs**
 ```miniscript
 //include<somefolder/**/*.gs>
 // Will include any files with .gs extension in 'somefolder' and all it subfolders recursievly
-a // Hello from a.gs!
-b // Hello from b.gs!
+a
+b
 ```
 
-<b>You can test your glob patterns in <a href="https://globster.xyz">globster.xyz</a></b>
+Then, compile c.gs as shown below:
+```bash
+greyscript_compiler -f c.gs -o output.gs
+```
+
+**output.gs**
+```miniscript
+a = function()
+  print("Hello from a.gs!")
+end function
+
+b = function()
+  print("Hello from b.gs!")
+end function
+
+
+// Will include any files with .gs extension in 'somefolder' and all it subfolders recursievly
+a // Hello from a.gs!
+b // Hello from b.gs!
+
+```
+
+You can have multiple includes anywhere in your input file
+
+You can test your glob patterns [**here**](https://globster.xyz)
+
+
+## Building from source
+*Note for windows users:* you also need to download **[Builder Tools for Visual Studio 2019](https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=BuildTools&rel=16).** During installation, select **C++ tools**.
+
+Requirements: [**rust**](https://www.rust-lang.org/tools/install)
+
+1. <abbr title="git clone https://github.com/anarrak/greyscript_compiler">Clone</abbr> repository first
+
+2. In cloned repository directory run:
+```bash
+cargo build -r
+```
+
+3. You will find your executable file in target/release.
+
+You can also download compiled executables in [**Releases**](https://github.com/anarrak/greyscript_compiler/releases) for linux and windows.
+
+if you find bugs or something doesn't work, contact me on [discord](https://discord.com/users/711921484943327273).
