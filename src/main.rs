@@ -87,11 +87,11 @@ fn main() {
     });
 
     if args.use_clipboard {
-        if cfg!(not(target_os = "linux")) {
-            Clipboard::new().unwrap().set_text(processed).unwrap();
-        } else {
+        if cfg!(target_os = "linux") {
             error!("On Linux, use xclip instead");
             panic!();
+        } else {
+            Clipboard::new().unwrap().set_text(processed).unwrap();
         }
     } else {
         let path: &String = &args.output_path.unwrap_or_else(|| {
