@@ -1,7 +1,7 @@
 # Grey Script Compiler
 ### Small file includer for Grey Script written in Rust 🦀
-## What is Grey Script?
-Grey script is a fork of [**Miniscript**](https://github.com/JoeStrout/miniscript). It is used in game named [**Grey Hack**](https://store.steampowered.com/app/605230").
+## What is a Grey Script?
+Grey script is a fork of [**Miniscript**](https://github.com/JoeStrout/miniscript). It's used in a game named [**Grey Hack**](https://store.steampowered.com/app/605230").
 
 ## Why do I even need this?
 The game is very inconvenient to use the in-game code editor, but you can use external editors like [vs code](https://code.visualstudio.com/). They offer syntax checking and many other features. But when the complexity of the project grows, you need to split it into files. The game already has an **import_code** function that imports the contents of a file, but when using external editors, you have to copy and paste dozens of files inside the game. This program tries to solve this problem. With it you can compile all your code in a second and immediately insert it into the game.
@@ -9,8 +9,9 @@ The game is very inconvenient to use the in-game code editor, but you can use ex
 ## Features
 - ### Blazingly fast
 - ### Pattern matching with [glob](https://en.wikipedia.org/wiki/Glob_(programming))
-- ### Paste compiled version right in clipboard
+- ### Paste the compiled version directly into your clipboard
 - ### No need to split files
+- ### Code compression (WIP)
 </ul>
 
 ## Usage
@@ -19,7 +20,7 @@ The game is very inconvenient to use the in-game code editor, but you can use ex
 greyscript_compiler --file <FILE_PATH> --output <OUTPUT_PATH>
 ```
 
-### Paste to clipboard
+### Paste into the clipboard
 
 ```bash
 
@@ -34,7 +35,7 @@ greyscript_compiler --file <FILE_PATH> --output /dev/stdout | xclip -selection c
 ```
 
 ## File examples
-Place glob pattern between *//include<* and *>* like shown below:
+Place the glob pattern between *//include<* and *>* like shown below:
 
 **a.gs**
 ```miniscript
@@ -90,7 +91,7 @@ end function
 **c.gs**
 ```miniscript
 //include<somefolder/**/*.gs>
-// Will include any files with .gs extension in 'somefolder' and all it subfolders recursievly
+// Will include any files with .gs extension in 'somefolder' and all it subfolders recursively
 a
 b
 ```
@@ -111,7 +112,7 @@ b = function()
 end function
 
 
-// Will include any files with .gs extension in 'somefolder' and all it subfolders recursievly
+// Will include any files with .gs extension in 'somefolder' and all it subfolders recursively
 a // Hello from a.gs!
 b // Hello from b.gs!
 
@@ -127,7 +128,7 @@ You can test your glob patterns [**here**](https://globster.xyz)
 
 Requirements: [**rust**](https://www.rust-lang.org/tools/install)
 
-1. <abbr title="git clone https://github.com/anarrak/greyscript_compiler">Clone</abbr> repository first
+1. <abbr title="git clone https://github.com/anarrak/greyscript_compiler">Clone</abbr> the repository first
 
 2. In cloned repository directory run:
 ```bash
@@ -138,4 +139,4 @@ cargo build -r
 
 You can also download compiled executables in [**Releases**](https://github.com/anarrak/greyscript_compiler/releases) for linux and windows.
 
-if you find bugs or something doesn't work, contact me on [discord](https://discord.com/users/711921484943327273).
+if you find a bug or something doesn't work, contact me on [discord](https://discord.com/users/711921484943327273).

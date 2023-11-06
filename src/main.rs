@@ -6,7 +6,7 @@ use parser::find_between;
 use std::{
     fs::{File, OpenOptions},
     io::{Read, Write},
-    path::{Path, PathBuf}, error::Error,
+    path::{Path, PathBuf}, error::Error
 };
 
 use arboard::Clipboard;
@@ -17,6 +17,8 @@ struct Args {
     file_path: String,
     #[arg(short = 'o', long = "output", help = "Output file", required = false)]
     output_path: Option<String>,
+    #[arg(short = 'm', long = "compress", help = "Compress the output file", required = false)]
+    compress: bool,
     #[arg(short = 'c', long = "clip", action = ArgAction::SetTrue, help = "Redirect output to a clipboard (On Linux, use xclip)")]
     use_clipboard: bool,
 }
@@ -80,11 +82,15 @@ fn main() {
     let mut file_full_path: PathBuf = file.path().unwrap();
     file_full_path.pop();
 
-    let processed = process_includes(source, file_full_path)
+    let mut processed = process_includes(source, file_full_path)
             .unwrap_or_else(|err| {
                 error!("Got error while parsing: {}", err);
                 panic!()
     });
+
+    if args.compress {
+        processed = processed.replace("    ", "");
+    }
 
     if args.use_clipboard {
         if cfg!(target_os = "linux") {
